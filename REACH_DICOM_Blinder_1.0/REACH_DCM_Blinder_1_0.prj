@@ -1,0 +1,135 @@
+<deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
+  <configuration file="C:\Users\felix\Documents\MATLAB\DICOM_Blinder\REACH\REACH_DICOM_Blinder_1.0\REACH_DCM_Blinder_1_0.prj" location="C:\Users\felix\Documents\MATLAB\DICOM_Blinder\REACH\REACH_DICOM_Blinder_1.0" name="REACH_DCM_Blinder_1_0" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>REACH_DCM_Blinder_1_0</param.appname>
+    <param.icon />
+    <param.icons />
+    <param.version>1.0</param.version>
+    <param.authnamewatermark>Felix Liu</param.authnamewatermark>
+    <param.email>felix.liu@ucsf.edu</param.email>
+    <param.company>UCSF</param.company>
+    <param.summary>DICOM blinding program for REACH/ComeBACK study</param.summary>
+    <param.description />
+    <param.screenshot>${PROJECT_ROOT}\ucsf1_installer.png</param.screenshot>
+    <param.guid />
+    <param.installpath.string>\UCSF\REACH_DCM_Blinder_1_0\</param.installpath.string>
+    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.logo>${PROJECT_ROOT}\ucsf1_installer.png</param.logo>
+    <param.install.notes />
+    <param.target.install.notes />
+    <param.intermediate>${PROJECT_ROOT}\REACH_DCM_Blinder_1_0\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\REACH_DCM_Blinder_1_0\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\REACH_DCM_Blinder_1_0\for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}\REACH_DCM_Blinder_1_0</param.logdir>
+    <param.enable.clean.build>false</param.enable.clean.build>
+    <param.user.defined.mcr.options />
+    <param.target.type>subtarget.standalone</param.target.type>
+    <param.support.packages />
+    <param.web.mcr>true</param.web.mcr>
+    <param.package.mcr>false</param.package.mcr>
+    <param.no.mcr>false</param.no.mcr>
+    <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
+    <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
+    <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
+    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.create.log>false</param.create.log>
+    <param.log.file />
+    <param.native.matlab>false</param.native.matlab>
+    <param.checkbox>false</param.checkbox>
+    <param.example />
+    <param.help.text>Syntax 
+	 REACH_DCM_Blinder_1_0 -? 
+	 REACH_DCM_Blinder_1_0 varargin 
+ Input Arguments 
+	 -?  print help on how to use the application 
+	 varargin  input arguments</param.help.text>
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.version />
+      <param.description />
+      <param.guid />
+      <param.installpath.string />
+      <param.installpath.combo />
+      <param.install.notes />
+      <param.target.install.notes />
+      <param.intermediate />
+      <param.files.only />
+      <param.output />
+      <param.logdir />
+      <param.enable.clean.build />
+      <param.user.defined.mcr.options />
+      <param.target.type />
+      <param.support.packages />
+      <param.web.mcr />
+      <param.package.mcr />
+      <param.no.mcr />
+      <param.web.mcr.name />
+      <param.package.mcr.name />
+      <param.no.mcr.name />
+      <param.windows.command.prompt />
+      <param.create.log />
+      <param.log.file />
+      <param.native.matlab />
+      <param.checkbox />
+      <param.example />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\REACH_DCM_Blinder_1_0.m</file>
+    </fileset.main>
+    <fileset.resources />
+    <fileset.package />
+    <fileset.depfun>
+      <file>${PROJECT_ROOT}\AFFBlinder.m</file>
+      <file>${PROJECT_ROOT}\AFFdcmmod.m</file>
+      <file>${PROJECT_ROOT}\AFFdlmtxtwrite.m</file>
+      <file>${PROJECT_ROOT}\AFFfiletroll.m</file>
+      <file>${PROJECT_ROOT}\AFFLister.m</file>
+      <file>${PROJECT_ROOT}\AFFmeta.m</file>
+      <file>${PROJECT_ROOT}\AFFreaddlm.m</file>
+      <file>${PROJECT_ROOT}\indcfind.m</file>
+      <file>${PROJECT_ROOT}\REACH_DCM_Blinder_1_0.fig</file>
+      <file>${PROJECT_ROOT}\REACHBlinder.m</file>
+      <file>${PROJECT_ROOT}\REACHCheckIDs.m</file>
+      <file>${PROJECT_ROOT}\REACHLister.m</file>
+      <file>${PROJECT_ROOT}\REACHWriteList.m</file>
+    </fileset.depfun>
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}\REACH_DCM_Blinder_1_0\for_testing" name="readme.txt" optional="true">C:\Users\felix\Documents\MATLAB\DICOM_Blinder\REACH\REACH_DICOM_Blinder_1.0\REACH_DCM_Blinder_1_0\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\REACH_DCM_Blinder_1_0\for_testing" name="splash.png" optional="false">C:\Users\felix\Documents\MATLAB\DICOM_Blinder\REACH\REACH_DICOM_Blinder_1.0\REACH_DCM_Blinder_1_0\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\REACH_DCM_Blinder_1_0\for_testing" name="REACH_DCM_Blinder_1_0.exe" optional="false">C:\Users\felix\Documents\MATLAB\DICOM_Blinder\REACH\REACH_DICOM_Blinder_1.0\REACH_DCM_Blinder_1_0\for_testing\REACH_DCM_Blinder_1_0.exe</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2020a</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+        <toolbox name="neuralnetwork" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
