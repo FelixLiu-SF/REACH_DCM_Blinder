@@ -1,4 +1,4 @@
-function varargout = REACH_DCM_Blinder_1_00(varargin)
+function varargout = AFF_MP_1_00(varargin)
 % AFF_MP_1_00 MATLAB code for AFF_MP_1_00.fig
 %      AFF_MP_1_00, by itself, creates a new AFF_MP_1_00 or raises the existing
 %      singleton*.
@@ -154,7 +154,9 @@ function pushbutton_listandblind_Callback(hObject, eventdata, handles)
 
     folder_name1 = strtrim(handles.edit1.String);
     folder_name2 = strtrim(handles.edit2.String);
-    file_name3 = strtrim(handles.edit3.String);
+    %file_name3 = strtrim(handles.edit3.String);
+    blinding_id =       strtrim(handles.edit_blindingid.String);
+    blinding_acrostic = strtrim(handles.edit_blindingacrostic.String);
 
     try
         set(handles.figure1,'Pointer','watch');
@@ -177,22 +179,38 @@ function pushbutton_listandblind_Callback(hObject, eventdata, handles)
         
         if(~isempty(folder_name2) && size(filelist1,1)>0 && ~strcmpi(folder_name1,folder_name2))
             
-            [AFFoutput, AFFheader]=AFFLister(handles.output, handles, filelist1, folder_name2, handles.version,'Filelist');
+            %[AFFoutput, AFFheader]=AFFLister(handles.output, handles, filelist1, folder_name2, handles.version,'Filelist');
+            
+            [REACHmetadata, REACHheader]=REACHLister(handles.output, handles, filelist1, folder_name2);
+            
+            [CheckUniquePatient, All_PatientID, All_PatientName]=REACHCheckIDs(handles.output, handles, REACHmetadata, REACHheader);
+            
+            REACHWriteList(handles.output, handles, folder_name2, REACHmetadata, REACHheader, handles.version,'Filelist')
+            
             handles = guidata(handles.output);
             
             %%
-            if(isempty(file_name3))
-                errordlg('Blinding spreadsheet file could not be found. Listing files only.','Error');
+            if(isempty(blinding_id) || isempty(blinding_acrostic))
+                %Look for blinding IDs
                 
-            elseif(exist(file_name3,'file')) %Look for blinding IDs
+                errordlg('Blinding ID or Acrostic is empty. Listing files only.','Error');
+                
+            elseif(CheckUniquePatient==1) 
+                % check if patient ids and name is unique
                 try
                     
-                    AFFBlinder(handles.output, handles, AFFoutput, AFFheader, folder_name2, file_name3, 1);
+                    %AFFBlinder(handles.output, handles, AFFoutput, AFFheader, folder_name2, file_name3, 1);
+                    REACHBlinder(handles.output, handles, [REACHheader; REACHmetadata], REACHheader, folder_name2, blinding_id, blinding_acrostic, 1);
+                    
                     handles = guidata(handles.output);
                     
                     [filelist2] = AFFfiletroll(folder_name2,'*','.*',0,0);
                     
-                    [AFFoutput2]=AFFLister(handles.output, handles, filelist2, folder_name2, handles.version,'Blindedlist');
+                    %[AFFoutput2]=AFFLister(handles.output, handles, filelist2, folder_name2, handles.version,'Blindedlist');
+                    
+                    [REACHmetadata2, REACHheader2]=REACHLister(handles.output, handles, filelist2, folder_name2);
+                    REACHWriteList(handles.output, handles, folder_name2, REACHmetadata2, REACHheader2, handles.version,'Blindedlist')
+                    
                     handles = guidata(handles.output);
                     
                 catch blinding_err
@@ -211,7 +229,6 @@ function pushbutton_listandblind_Callback(hObject, eventdata, handles)
                     
                     errstr = sprintf('%s\r\n\r\n%s',horzcat('An error was encountered during blinding'),horzcat('Please check inventory list and error log files.'));
                     errordlg(errstr,'Error');
-                    winopen(folder_name2);
                     
                 else
                     msgbox('Blinding has successfully completed.','Blinding');
@@ -219,7 +236,7 @@ function pushbutton_listandblind_Callback(hObject, eventdata, handles)
                 end
                 
             else
-                errordlg('Blinding spreadsheet file could not be found. Listing files only.','Error');
+                errordlg('More than one Patient ID or Name found. Listing files only.','Error');
             end
 
         end
@@ -317,7 +334,7 @@ function pushbutton_list_Callback(hObject, eventdata, handles)
             
             [CheckUniquePatient, All_PatientID, All_PatientName]=REACHCheckIDs(handles.output, handles, REACHmetadata, REACHheader);
             
-            REACHWriteList(hObject, handles, folder_name2, REACHmetadata, REACHheader, handles.version,'Filelist')
+            REACHWriteList(handles.output, handles, folder_name2, REACHmetadata, REACHheader, handles.version,'Filelist')
             
             handles = guidata(handles.output);
             
@@ -487,18 +504,18 @@ function pushbutton_checkid_Callback(hObject, eventdata, handles)
         set(handles.figure1,'Pointer','watch');
         pause(0.001);
         
-        if(strcmpi(folder_name1,folder_name2))
-            errordlg('Input or Output directories cannot be the same.','Error');
-            filelist1 = [];
+%         if(strcmpi(folder_name1,folder_name2))
+%             errordlg('Input or Output directories cannot be the same.','Error');
+%             filelist1 = [];
             
-        elseif(~isempty(folder_name1))
+        if(~isempty(folder_name1))
             [filelist1] = AFFfiletroll(folder_name1,'*','.*',0,0);
             if(size(filelist1,1)<1)
                 errordlg('No files found for listing.','Error');
             end
             
         else
-            errordlg('Input or Output directory is missing.','Error');
+            errordlg('Input directory is missing.','Error');
             filelist1 = [];
         end
         
