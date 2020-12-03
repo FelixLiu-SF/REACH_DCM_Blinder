@@ -1,4 +1,4 @@
-function varargout = AFF_MP_1_00(varargin)
+function varargout = REACH_DCM_Blinder_1_00(varargin)
 % AFF_MP_1_00 MATLAB code for AFF_MP_1_00.fig
 %      AFF_MP_1_00, by itself, creates a new AFF_MP_1_00 or raises the existing
 %      singleton*.
@@ -22,7 +22,7 @@ function varargout = AFF_MP_1_00(varargin)
 
 % Edit the above text to modify the response to help AFF_MP_1_00
 
-% Last Modified by GUIDE v2.5 17-Aug-2017 10:21:41
+% Last Modified by GUIDE v2.5 03-Dec-2020 09:51:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -122,9 +122,9 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-% --- Executes on button press in pushbutton1.
-function pushbutton1_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton1 (see GCBO)
+% --- Executes on button press in pushbutton_inputdir.
+function pushbutton_inputdir_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_inputdir (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     folder_name1 = uigetdir;
@@ -133,9 +133,9 @@ function pushbutton1_Callback(hObject, eventdata, handles)
     end
     
     
-% --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton2 (see GCBO)
+% --- Executes on button press in pushbutton_outputdir.
+function pushbutton_outputdir_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_outputdir (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
     folder_name2 = uigetdir;
@@ -144,9 +144,9 @@ function pushbutton2_Callback(hObject, eventdata, handles)
     end
 
 
-% --- Executes on button press in pushbutton3.
-function pushbutton3_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton3 (see GCBO)
+% --- Executes on button press in pushbutton_listandblind.
+function pushbutton_listandblind_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_listandblind (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -232,9 +232,9 @@ function pushbutton3_Callback(hObject, eventdata, handles)
         set(handles.figure1,'Pointer','arrow');
     end
     
-% --- Executes on button press in pushbutton4.
-function pushbutton4_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton4 (see GCBO)
+% --- Executes on button press in pushbutton_exit.
+function pushbutton_exit_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_exit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -267,9 +267,9 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton5 (see GCBO)
+% --- Executes on button press in pushbutton_blindingfile.
+function pushbutton_blindingfile_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_blindingfile (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -279,9 +279,9 @@ function pushbutton5_Callback(hObject, eventdata, handles)
     end
 
 
-% --- Executes on button press in pushbutton8.
-function pushbutton8_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton8 (see GCBO)
+% --- Executes on button press in pushbutton_list.
+function pushbutton_list_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_list (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -311,7 +311,14 @@ function pushbutton8_Callback(hObject, eventdata, handles)
         
         if(~isempty(folder_name2) && size(filelist1,1)>0 && ~strcmpi(folder_name1,folder_name2))
                    
-            [AFFoutput, AFFheader]=AFFLister(handles.output, handles, filelist1, folder_name2, handles.version,'Filelist');
+            %[AFFoutput, AFFheader]=AFFLister(handles.output, handles, filelist1, folder_name2, handles.version,'Filelist');
+            
+            [REACHmetadata, REACHheader]=REACHLister(handles.output, handles, filelist1, folder_name2);
+            
+            [CheckUniquePatient, All_PatientID, All_PatientName]=REACHCheckIDs(handles.output, handles, REACHmetadata, REACHheader);
+            
+            REACHWriteList(hObject, handles, folder_name2, REACHmetadata, REACHheader, handles.version,'Filelist')
+            
             handles = guidata(handles.output);
             
             set(handles.figure1,'Pointer','arrow');
@@ -327,9 +334,9 @@ function pushbutton8_Callback(hObject, eventdata, handles)
     end
 
 
-% --- Executes on button press in pushbutton9.
-function pushbutton9_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton9 (see GCBO)
+% --- Executes on button press in pushbutton_unblind.
+function pushbutton_unblind_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_unblind (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -416,4 +423,101 @@ function pushbutton9_Callback(hObject, eventdata, handles)
         set(handles.figure1,'Pointer','arrow');
     end
     
+    
+
+
+
+function edit_blindingid_Callback(hObject, eventdata, handles)
+% hObject    handle to edit_blindingid (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit_blindingid as text
+%        str2double(get(hObject,'String')) returns contents of edit_blindingid as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit_blindingid_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit_blindingid (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit_blindingacrostic_Callback(hObject, eventdata, handles)
+% hObject    handle to edit_blindingacrostic (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit_blindingacrostic as text
+%        str2double(get(hObject,'String')) returns contents of edit_blindingacrostic as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit_blindingacrostic_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit_blindingacrostic (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton_checkid.
+function pushbutton_checkid_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_checkid (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+%% Check Patient Names and IDs
+
+    folder_name1 = strtrim(handles.edit1.String);
+    folder_name2 = strtrim(handles.edit2.String);
+
+    try
+        set(handles.figure1,'Pointer','watch');
+        pause(0.001);
+        
+        if(strcmpi(folder_name1,folder_name2))
+            errordlg('Input or Output directories cannot be the same.','Error');
+            filelist1 = [];
+            
+        elseif(~isempty(folder_name1))
+            [filelist1] = AFFfiletroll(folder_name1,'*','.*',0,0);
+            if(size(filelist1,1)<1)
+                errordlg('No files found for listing.','Error');
+            end
+            
+        else
+            errordlg('Input or Output directory is missing.','Error');
+            filelist1 = [];
+        end
+        
+        if(size(filelist1,1)>0 && ~strcmpi(folder_name1,folder_name2))
+            
+            [REACHmetadata, REACHheader]=REACHLister(handles.output, handles, filelist1, folder_name2);
+            
+            [CheckUniquePatient, All_PatientID, All_PatientName]=REACHCheckIDs(handles.output, handles, REACHmetadata, REACHheader);
+            
+            handles = guidata(handles.output);
+            
+            set(handles.figure1,'Pointer','arrow');
+            
+        end
+        
+    catch list_err
+        
+        set(handles.figure1,'Pointer','arrow');
+        errordlg(horzcat('Error with checking files: ',list_err.message),'Error');
+                
+    end
     
